@@ -7,6 +7,7 @@ var url = require('url'),
 
 var rootUrl = argv.url,
 	depth = argv.level,
+	resultFileName = "results.json",
 	urls = []; //final array
 
 var checkArgs = function () {
@@ -19,13 +20,8 @@ var checkArgs = function () {
 
 var loadPageUrls = function(url, level, callback){
 	request(url, function (error, response, html) {
-		if(error){
-			console.log(error);
-			console.log(url);
-			console.log('Continue...');
-		}
-		if(callback)
-			callback(error, parse(html,level));
+		//if(error) console.log("Unable to load:" + url);
+		callback(null, parse(html,level));
 	});
 }
 
@@ -37,10 +33,13 @@ var parse = function(html, level){
 			var href = $(this).attr('href');
 			if(href && href.indexOf('http://') === 0 && urls.indexOf(href)=== -1){
 			
-					urls.push(href); //push to final array
-					
-					return function(cb){
-						loadPage(href, level, cb);
+				urls.push(href); //push to final array
+
+				if(level == 0)
+					return href;
+
+				return function (cb) {
+					crawl(href, level, cb);
 					}
 			}
 		}).get();
@@ -49,42 +48,42 @@ var parse = function(html, level){
 }
 
 var split =function(funcs, cb){
-	async.parallel(funcs, function(err, results){
-		if(err){
-			console.log(error);
-		}
-		cb(null, results);
+	async.parallel(funcs, function(err){
+		cb(err);
 	});
 }
 
-var loadPage = function(url, level, cb){
-	if(level >= 0){
+var crawl = function(url, level, cb){
 		async.waterfall([
 			function(callback){
 				loadPageUrls(url, --level, callback);
 			},
-			function(funcs, callback){
+			function(res, callback){
 
 				if(level == 0){
-					callback(null, null);
+					callback(null);
 				}
 				else{
-					split(funcs, callback);
+					split(res, callback);
 				}
 			}
-		], function (err, result) {
-				cb(null, urls);
+		], function (err) {
+				cb(err); //will be executed when all splits are finished
 		});
-	}
 }
 
-var saveResults = function(err, results){
-	console.log("URLs found: " + results.length);
-	fs.writeFile('results.json', JSON.stringify(results), function (err) {
-		if (err) {
-			console.log(err);
+var saveResults = function(err){
+	if (err) {
+		console.log(err);
+	}
+
+	console.log("URLs found: " + urls.length);
+
+	fs.writeFile(resultFileName, JSON.stringify(urls), function (error) {
+		if (error) {
+			console.log(error);
 		} else {
-			console.log("Saved to results.json");
+			console.log("Saved to " + resultFileName);
 			console.log('Done.');
 		}
 	});
@@ -92,7 +91,7 @@ var saveResults = function(err, results){
 
 if(checkArgs()){
 	console.log('Start...');
-	loadPage(rootUrl, depth, saveResults)
+	crawl(rootUrl, depth, saveResults)
 }
 
 
