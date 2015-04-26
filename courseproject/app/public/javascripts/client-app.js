@@ -1,9 +1,9 @@
-var clientApp = angular.module('clientApp', [
+var app = angular.module('app', [
     'ngRoute',
     'clientControllers'
 ]);
 
-clientApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
         $routeProvider.
             when('/', {
                 templateUrl: '/templates/dashboard.html',
@@ -25,5 +25,5 @@ clientApp.config(['$routeProvider', '$locationProvider', function($routeProvider
                 redirectTo: '/'
             });
 
-    $locationProvider.html5Mode(true);
+    /*$locationProvider.html5Mode(true);*/
     }]);
