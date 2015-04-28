@@ -5,9 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var swig = require('swig');
+var dbConfig = require('./db');
 
-var routes = require('./routes/index');
-var auth = require('./routes/auth');
+var mongoose = require('mongoose');
+mongoose.connect(dbConfig.url);
 
 var app = express();
 
@@ -23,6 +24,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Configuring Passport
+var passport = require('passport');
+var expressSession = require('express-session');
+app.use(expressSession({secret: 'mySecretKey'}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Initialize Passport
+var initPassport = require('./passport/init');
+initPassport(passport);
+
+var routes = require('./routes/index');
+var auth = require('./routes/auth')(passport);
 
 app.use('/', routes);
 app.use('/auth', auth);
