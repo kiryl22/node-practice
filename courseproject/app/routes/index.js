@@ -1,4 +1,5 @@
 var express = require('express');
+var Project = require('../models/project');
 var router = express.Router();
 
 var isAuthenticated = function (req, res, next) {
@@ -14,6 +15,13 @@ var isAuthenticated = function (req, res, next) {
 /* GET home page. */
 router.get('/', isAuthenticated, function(req, res, next) {
   res.render('index', { projects: ["project1","project2"] });
+});
+
+router.post('/CreateProject', isAuthenticated, function(req, res, next) {
+  Project.create(req.body, function (err, post) {
+    if (err) return next(err);
+    res.json(post);
+  });
 });
 
 module.exports = router;
