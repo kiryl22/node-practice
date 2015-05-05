@@ -14,13 +14,20 @@ var isAuthenticated = function (req, res, next) {
 
 /* GET home page. */
 router.get('/', isAuthenticated, function(req, res, next) {
-  res.render('index', { projects: ["project1","project2"] });
+    res.render('index');
 });
 
 router.post('/CreateProject', isAuthenticated, function(req, res, next) {
   Project.create(req.body, function (err, post) {
     if (err) return next(err);
     res.json(post);
+  });
+});
+
+router.get('/ProjectsList', isAuthenticated, function(req, res, next) {
+  Project.find({}, function(err, projects){
+    if (err) return next(err);
+    res.json(projects);
   });
 });
 

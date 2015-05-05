@@ -2,7 +2,7 @@
     <h3>New Project</h3>
     <div class="form-group">
         <label for="projName">Project name</label>
-        <input type="text" class="form-control" name='projName' id="projName" placeholder="Enter project name">
+        <input type="text" class="form-control" ng-model="newProject.name" name='projName' id="projName" placeholder="Enter project name">
     </div>
-    <button class="btn btn-default">Create</button>
+    <button class="btn btn-default" ng-click="create()">Create</button>
 </div>
