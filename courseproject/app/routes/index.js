@@ -31,4 +31,11 @@ router.get('/ProjectsList', isAuthenticated, function(req, res, next) {
   });
 });
 
+router.get('/GetProject', isAuthenticated, function(req, res, next) {
+  Project.findOne({'_id' : req.query.projectId}, function(err, project){
+    if (err) return next(err);
+    res.json(project);
+  });
+});
+
 module.exports = router;

@@ -18,12 +18,11 @@ clientControllers.controller('DashboardCtrl', ['$scope', '$http',
 
 clientControllers.controller('ProjectCtrl', ['$scope', '$routeParams', '$http',
     function($scope, $routeParams, $http) {
-        $scope.projectId = $routeParams.projectId;
 
-        $scope.newProject= { name: "NewProject"}
+        $scope.project= {}
 
-        $scope.create = function(){
-            $http.post('/CreateProject', $scope.newProject).
+        $scope.save = function(){
+            $http.post('/CreateProject', $scope.project).
                 success(function(data, status, headers, config) {
                     //ToDo
                 }).
@@ -31,5 +30,23 @@ clientControllers.controller('ProjectCtrl', ['$scope', '$routeParams', '$http',
                     //ToDo
                 });
         }
+
+        $scope.init = function(projectId){
+            $http.get('/GetProject',{
+                params: {
+                    projectId: projectId
+                }
+            }).
+                success(function(data, status, headers, config) {
+                    if(data) {
+                        $scope.project = data;
+                    }
+                }).
+                error(function(data, status, headers, config) {
+                    //ToDo
+                });
+        }
+
+        $scope.init($routeParams.projectId);
 
     }]);
