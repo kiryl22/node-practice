@@ -27,3 +27,39 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
     /*$locationProvider.html5Mode(true);*/
     }]);
+
+
+app.factory('ProjectService', function($http) {
+    return {
+        getProjectsList: function(successCb, errorCb) {
+            return $http.get('/ProjectsList')
+                .then(function(result) {
+                    return successCb(result.data);
+                }, function(result) {
+                    return errorCb(result)
+                });
+        },
+
+        getProjectById: function(projectId, successCb, errorCb) {
+            return $http.get('/GetProject', {
+                    params: {
+                        projectId: projectId
+                    }
+                }).then(function(result) {
+                    return successCb(result.data);
+                }, function(result) {
+                    return errorCb(result)
+                });
+        },
+
+        saveProject: function(project, successCb, errorCb) {
+            return $http.post('/SaveProject', project)
+                .then(function(result) {
+                    return successCb(result.data);
+                }, function(result) {
+                    return errorCb(result)
+                });
+        }
+
+    }
+});

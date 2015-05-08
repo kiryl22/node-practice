@@ -4,5 +4,25 @@
         <label for="projName">Project name</label>
         <input type="text" class="form-control" ng-model="project.name" name='projName' id="projName" placeholder="Enter project name">
     </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="status in project.statuses">
+            <td><input type="text"  ng-model="project.statuses[$index]"></td>
+            <td><a ng-click="deleteStatus($index)">Delete</a></td>
+        </tr>
+        <tr>
+            <td><input type="text"  ng-model="statusToAdd"></td>
+            <td>
+                <a class="btn btn-default" ng-click="addStatus()">Add Status</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
     <button class="btn btn-default" ng-click="save()">Save</button>
 </div>

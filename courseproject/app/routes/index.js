@@ -17,11 +17,24 @@ router.get('/', isAuthenticated, function(req, res, next) {
     res.render('index');
 });
 
-router.post('/CreateProject', isAuthenticated, function(req, res, next) {
-  Project.create(req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
+router.post('/SaveProject', isAuthenticated, function(req, res, next) {
+
+  var project = req.body;
+
+  if(project._id)
+  {
+    Project.findByIdAndUpdate(project._id, project, function (err, data) {
+      if (err) return handleError(err);
+      res.json(data);
+    });
+  }else {
+    Project.create(project, function (err, data) {
+      if (err) return next(err);
+      res.json(data);
+    });
+  }
+
+
 });
 
 router.get('/ProjectsList', isAuthenticated, function(req, res, next) {
