@@ -1,5 +1,5 @@
 <div>
-    <h2 ng-if="project.name">{{project.name}}</h2>
+    <h2>{{project.name}}</h2>
     <div class="form-group">
         <label for="projName">Project name</label>
         <input type="text" class="form-control" ng-model="project.name" name='projName' id="projName" placeholder="Enter project name">
@@ -12,8 +12,8 @@
                     <tr  ng-repeat="status in project.statuses" editable-row collection="project.statuses" index="$index">
                     </tr>
                     <tr>
-                        <td><input type="text"  ng-model="statusToAdd"></td>
-                        <td><a class="btn btn-default" ng-click="addStatus()">Add Status</a></td>
+                        <td><input placeholder="Status Name" type="text"  ng-model="statusToAdd"></td>
+                        <td><a  class="btn btn-default" ng-click="addStatus()">Add Status</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -25,7 +25,7 @@
                     <tr  ng-repeat="status in project.priorities" editable-row collection="project.priorities" index="$index">
                     </tr>
                     <tr>
-                        <td><input type="text"  ng-model="priorityToAdd"></td>
+                        <td><input placeholder="Priority Name" type="text"  ng-model="priorityToAdd"></td>
                         <td><a class="btn btn-default" ng-click="addPriority()">Add Priority</a></td>
                     </tr>
                 </tbody>
