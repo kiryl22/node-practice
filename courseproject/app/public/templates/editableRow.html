@@ -1,0 +1,8 @@
+<td>
+    <span ng-show="!isEdit">{{collection[index]}}</span>
+    <input ng-show="isEdit" ng-model="tempVar" ng-blur="save()">
+</td>
+<td>
+    <span><a  ng-show="!isEdit" ng-click="edit()">Edit</a></span>
+    <span><a ng-click="delete()">Delete</a></span>
+</td>

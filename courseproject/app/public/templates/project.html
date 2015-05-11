@@ -1,28 +1,36 @@
 <div>
-    <h3>New Project</h3>
+    <h2 ng-if="project.name">{{project.name}}</h2>
     <div class="form-group">
         <label for="projName">Project name</label>
         <input type="text" class="form-control" ng-model="project.name" name='projName' id="projName" placeholder="Enter project name">
     </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Status</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="status in project.statuses">
-            <td><input type="text"  ng-model="project.statuses[$index]"></td>
-            <td><a ng-click="deleteStatus($index)">Delete</a></td>
-        </tr>
-        <tr>
-            <td><input type="text"  ng-model="statusToAdd"></td>
-            <td>
-                <a class="btn btn-default" ng-click="addStatus()">Add Status</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <button class="btn btn-default" ng-click="save()">Save</button>
+    <div class="row">
+        <div class="col-sm-6">
+            <label for="projName">Statuses</label>
+            <table class="table">
+                <tbody>
+                    <tr  ng-repeat="status in project.statuses" editable-row collection="project.statuses" index="$index">
+                    </tr>
+                    <tr>
+                        <td><input type="text"  ng-model="statusToAdd"></td>
+                        <td><a class="btn btn-default" ng-click="addStatus()">Add Status</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <label for="projName">Priorities</label>
+            <table class="table">
+                <tbody>
+                    <tr  ng-repeat="status in project.priorities" editable-row collection="project.priorities" index="$index">
+                    </tr>
+                    <tr>
+                        <td><input type="text"  ng-model="priorityToAdd"></td>
+                        <td><a class="btn btn-default" ng-click="addPriority()">Add Priority</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button class="btn btn-primary" ng-click="save()">Save Project</button>
 </div>

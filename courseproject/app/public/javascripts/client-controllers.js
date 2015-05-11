@@ -1,7 +1,7 @@
 var clientControllers = angular.module('clientControllers', []);
 
-clientControllers.controller('DashboardCtrl', ['$scope', '$http', 'ProjectService',
-    function ($scope, $http, ProjectService ) {
+clientControllers.controller('DashboardCtrl', ['$scope', 'ProjectService',
+    function ($scope,ProjectService ) {
 
         $scope.projectsList = [];
         $scope.init = function (){
@@ -13,14 +13,16 @@ clientControllers.controller('DashboardCtrl', ['$scope', '$http', 'ProjectServic
         }
     }]);
 
-clientControllers.controller('ProjectCtrl', ['$scope', '$routeParams', '$http','ProjectService',
-    function($scope, $routeParams, $http, ProjectService) {
+clientControllers.controller('ProjectCtrl', ['$scope', '$routeParams', 'ProjectService',
+    function($scope, $routeParams, ProjectService) {
 
         $scope.project= {
-            statuses : []
+            statuses : [],
+            priorities: []
         }
 
         $scope.statusToAdd = "";
+        $scope.priorityToAdd = "";
 
         $scope.save = function(){
             ProjectService.saveProject(
@@ -44,6 +46,13 @@ clientControllers.controller('ProjectCtrl', ['$scope', '$routeParams', '$http','
                 });
         }
 
+        $scope.addPriority = function() {
+            if($scope.priorityToAdd){
+                $scope.project.priorities.push($scope.priorityToAdd);
+                $scope.priorityToAdd = "";
+            }
+        }
+
         $scope.addStatus = function() {
             if($scope.statusToAdd){
                 $scope.project.statuses.push($scope.statusToAdd);
@@ -51,8 +60,12 @@ clientControllers.controller('ProjectCtrl', ['$scope', '$routeParams', '$http','
             }
         }
 
+        $scope.deletePriority = function(index) {
+                $scope.project.priorities.splice(index, 1);
+        }
+
         $scope.deleteStatus = function(index) {
-                $scope.project.statuses.splice(index, 1);
+            $scope.project.statuses.splice(index, 1);
         }
 
         $scope.getProject($routeParams.projectId);

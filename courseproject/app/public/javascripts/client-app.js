@@ -63,3 +63,35 @@ app.factory('ProjectService', function($http) {
 
     }
 });
+
+app.directive('editableRow', function($timeout) {
+    return {
+        restrict: 'EA',
+        scope: {
+            collection: '=',
+            index: '='
+        },
+        templateUrl: '/templates/editableRow.html',
+        replace: false,
+        link: function($scope, elem, attr, ctrl) {
+            $scope.tempVar = $scope.collection[$scope.index];
+            $scope.isEdit = false;
+
+            $scope.save = function() {
+                $scope.isEdit = false;
+                $scope.collection[$scope.index] = $scope.tempVar;
+            }
+
+            $scope.edit = function() {
+                $scope.isEdit = true;
+                $timeout(function() {
+                    elem.find('input')[0].focus();
+                });
+            }
+
+            $scope.delete = function() {
+                $scope.collection.splice($scope.index, 1);
+            }
+        }
+    };
+});
