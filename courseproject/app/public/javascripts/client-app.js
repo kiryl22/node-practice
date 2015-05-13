@@ -7,60 +7,116 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         $routeProvider.
             when('/', {
                 templateUrl: '/templates/dashboard.html',
-                controller: 'DashboardCtrl'
+                controller: 'DashboardCtrl',
+                resolve: {
+                    projectList: function (ProjectService) {
+                        return ProjectService.getProjectsList();
+                    }
+                }
             }).
             when('/project/:projectId?', {
                 templateUrl: '/templates/project.html',
-                controller: 'ProjectCtrl'
+                controller: 'ProjectCtrl',
+                resolve: {
+                    project: function (ProjectService, $route) {
+                        if($route.current.params.projectId)
+                        return ProjectService.getProject($route.current.params.projectId);
+                        return { statuses: [], priorities: []}
+                    }
+                }
             }).
-            when('/project/:id/board', {
+            when('/project/:projectId/board', {
                 templateUrl: '/templates/project-board.html',
-                controller: 'ProjectBoardCtrl'
+                controller: 'ProjectBoardCtrl',
+                resolve: {
+                    project: function (ProjectService, $route) {
+                        return ProjectService.getProject($route.current.params.projectId);
+                    }
+                }
             }).
             when('/ticket/:projectId/:ticketId?', {
-                templateUrl: 'templates/ticket',
-                controller: 'TicketCtrl'
+                templateUrl: 'templates/ticket.html',
+                controller: 'TicketCtrl',
+                resolve: {
+                    project: function (ProjectService, $route) {
+                        return ProjectService.getProject($route.current.params.projectId);
+                    },
+                    ticket: function () {
+                        return {}
+                    }
+                }
             }).
             otherwise({
                 redirectTo: '/'
             });
-
-    /*$locationProvider.html5Mode(true);*/
     }]);
 
 
-app.factory('ProjectService', function($http) {
+app.factory('ProjectService', function($http, $q) {
     return {
-        getProjectsList: function(successCb, errorCb) {
-            return $http.get('/ProjectsList')
-                .then(function(result) {
-                    return successCb(result.data);
-                }, function(result) {
-                    return errorCb(result)
-                });
+
+        getProjectsList: function() {
+            return $http.get('/ProjectsList').then(function(result) {
+                alertify.success("Project list loaded");
+                return result.data;
+            }, function(result) {
+                alertify.error("Error has occurred while retrieving projects list");
+                return result;
+            });;
         },
 
-        getProjectById: function(projectId, successCb, errorCb) {
+        getProject: function(projectId) {
             return $http.get('/GetProject', {
-                    params: {
-                        projectId: projectId
-                    }
-                }).then(function(result) {
-                    return successCb(result.data);
-                }, function(result) {
-                    return errorCb(result)
+                params: {
+                    projectId: projectId
+                }
+            }).then(function(result) {
+                return result.data;
+            }, function(result) {
+                alertify.error("Error has occurred while retrieving project data");
+                return result;
+            });
+        },
+
+        saveProject: function(project) {
+            return $http.post('/SaveProject', project)
+                .catch(function(err) {
+                    console.log(err);
+                    return $q.reject(err);
                 });
         },
 
-        saveProject: function(project, successCb, errorCb) {
-            return $http.post('/SaveProject', project)
-                .then(function(result) {
-                    return successCb(result.data);
-                }, function(result) {
-                    return errorCb(result)
+        getTicketById: function(projectId) {
+            return $http.get('/GetTicket', {
+                params: {
+                    projectId: projectId
+                }
+            }).then(function(result) {
+                return result.data;
+            }, function(err) {
+                return $q.reject(err);
+            });
+        },
+
+        getTicketsByProjId: function(projectId) {
+            return $http.get('/GetTickets', {
+                params: {
+                    projectId: projectId
+                }
+            }).then(function(result) {
+                return result.data;
+            }, function(err) {
+                return $q.reject(err);
+            });
+        },
+
+        saveTicket: function(ticket) {
+            return $http.post('/SaveTicket', ticket)
+                .catch(function(err) {
+                    console.log(err);
+                    return $q.reject(err);
                 });
         }
-
     }
 });
 
@@ -95,3 +151,5 @@ app.directive('editableRow', function($timeout) {
         }
     };
 });
+
+

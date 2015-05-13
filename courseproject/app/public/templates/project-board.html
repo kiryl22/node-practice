@@ -1,1 +1,21 @@
-<h3>Project Dashboard</h3>
+<div>
+    <h2>{{project.name}} Dashboard</h2>
+    <a class="btn btn-primary" href="#/ticket/{{project._id}}/">Create Ticket</a>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div ng-repeat="status in project.statuses" class="board-col"  ng-style="{ 'width': (100 / project.statuses.length) + '%' }">
+            <table class="table">
+                <thead>
+                <th  >{{status}}</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="ticket in statusTicketColl[status]">
+                    <td>{{ticket.name}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

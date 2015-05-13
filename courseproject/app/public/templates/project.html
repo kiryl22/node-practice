@@ -6,7 +6,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <label for="projName">Statuses</label>
+            <label>Statuses</label>
             <table class="table">
                 <tbody>
                     <tr  ng-repeat="status in project.statuses" editable-row collection="project.statuses" index="$index">
@@ -19,10 +19,10 @@
             </table>
         </div>
         <div class="col-sm-6">
-            <label for="projName">Priorities</label>
+            <label>Priorities</label>
             <table class="table">
                 <tbody>
-                    <tr  ng-repeat="status in project.priorities" editable-row collection="project.priorities" index="$index">
+                    <tr  ng-repeat="priority in project.priorities" editable-row collection="project.priorities" index="$index">
                     </tr>
                     <tr>
                         <td><input placeholder="Priority Name" type="text"  ng-model="priorityToAdd"></td>
