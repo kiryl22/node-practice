@@ -15,7 +15,10 @@ clientControllers.controller('ProjectCtrl', ['$scope', '$routeParams', 'ProjectS
 
         $scope.save = function(){
             ProjectService.saveProject($scope.project).then(function(res){
-                alertify.success("Project was saved");
+                if(res.data && res.data._id){
+                    $scope.project = res.data;
+                    alertify.success("Project was saved");
+                }
             }, function(res){
                 alertify.error("Project saving error");
             })
@@ -86,13 +89,19 @@ clientControllers.controller('ProjectBoardCtrl', ['$scope','$routeParams', 'Proj
 clientControllers.controller('TicketCtrl', ['$scope', 'ProjectService', 'project', 'ticket',
     function ($scope, ProjectService, project, ticket ) {
 
-        $scope.ticket = ticket ? ticket : {};
         $scope.project = project;
+        $scope.ticket = (ticket && ticket._id) ? ticket : {
+            status: (project.statuses && project.statuses[0]) ? project.statuses[0] : "",
+            priority: (project.priorities && project.priorities[0]) ? project.priorities[0] : ""
+        };
 
         $scope.save = function(){
             ProjectService.saveTicket($scope.ticket)
                 .then( function(res){
+                    if(res.data && res.data._id){
+                        $scope.ticket = res.data;
                         alertify.success("Ticket was saved");
+                    }
                 },
                 function(err){
                     alertify.error("Ticket saving error");

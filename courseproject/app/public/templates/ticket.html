@@ -1,7 +1,7 @@
 <div>
     </br>
     <ol class="breadcrumb">
-        <li><a href="#">Board</a></li>
+        <li><a href="#/project/{{project._id}}/board">{{project.name}}</a></li>
         <li class="active">{{ticket.name ? ticket.name : "New ticket"}}</li>
     </ol>
 </div>
@@ -9,6 +9,18 @@
 <div class="form-group">
     <label for="ticketName">Title</label>
     <input type="text" class="form-control" ng-model="ticket.name" name='ticketName' id="ticketName" placeholder="Enter ticket title">
+</div>
+<div class="form-group">
+    <label for="ticketStatus">Status</label>
+    <select  class="form-control" ng-options="status for status in project.statuses" ng-model="ticket.status" id="ticketStatus"></select>
+</div>
+<div class="form-group">
+    <label for="ticketPriority">Priority</label>
+    <select  class="form-control" ng-options="priority for priority in project.priorities" ng-model="ticket.priority" id="ticketPriority"></select>
+</div>
+    <div class="form-group">
+    <label for="ticketDescription">Description</label>
+    <textarea class="form-control" ng-model="ticket.description" rows="5" id="ticketDescription"></textarea>
 </div>
 <button class="btn btn-primary" ng-click="save()">Save Ticket</button>
 

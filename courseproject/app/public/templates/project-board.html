@@ -12,7 +12,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="ticket in statusTicketColl[status]">
-                    <td>{{ticket.name}}</td>
+                    <td><a href="#/ticket/{{project._id}}/{{ticket._id}}">{{ticket.name}}</a></td>
                 </tr>
                 </tbody>
             </table>

@@ -48,6 +48,13 @@ router.get('/GetProject', isAuthenticated, function(req, res, next) {
   });
 });
 
+router.get('/GetTicket', isAuthenticated, function(req, res, next) {
+  Ticket.findOne({'_id' : req.query.ticketId}, function(err, project){
+    if (err) return next(err);
+    res.json(project);
+  });
+});
+
 router.post('/SaveTicket', isAuthenticated, function(req, res, next) {
   var ticket = req.body;
   if(ticket._id)

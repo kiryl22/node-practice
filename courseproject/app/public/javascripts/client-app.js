@@ -41,8 +41,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                     project: function (ProjectService, $route) {
                         return ProjectService.getProject($route.current.params.projectId);
                     },
-                    ticket: function () {
-                        return {}
+                    ticket: function (ProjectService, $route) {
+                        if($route.current.params.ticketId)
+                        return ProjectService.getTicket($route.current.params.ticketId);
+                        return {};
                     }
                 }
             }).
@@ -86,10 +88,10 @@ app.factory('ProjectService', function($http, $q) {
                 });
         },
 
-        getTicketById: function(projectId) {
+        getTicket: function(ticketId) {
             return $http.get('/GetTicket', {
                 params: {
-                    projectId: projectId
+                    ticketId: ticketId
                 }
             }).then(function(result) {
                 return result.data;
