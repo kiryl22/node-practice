@@ -23,7 +23,7 @@ router.post('/SaveProject', isAuthenticated, function(req, res, next) {
   var project = req.body;
   if(project._id)
   {
-    Project.findByIdAndUpdate(project._id, project, function (err, data) {
+    Project.findByIdAndUpdate(project._id, project,{ 'new': true}, function (err, data) {
       if (err) return handleError(err);
       res.json(data);
     });
@@ -65,6 +65,7 @@ router.post('/SaveTicket', isAuthenticated, function(req, res, next) {
       res.json(data);
     });
   }else {
+    ticket.author = mapUser(req.user);
     Ticket.create(ticket, function (err, data) {
       if (err) return next(err);
       res.json(data);
@@ -82,8 +83,18 @@ router.get('/GetTickets', isAuthenticated, function(req, res, next) {
 router.post('/UsersList', isAuthenticated, function(req, res, next) {
   User.find({}, function(err, users){
     if (err) return next(err);
-    res.json(users);
+    var result = users.map(mapUser);
+    res.json(result);
   });
 });
+
+var mapUser =  function(userModel){
+  return {
+    email: userModel.email,
+    firstName: userModel.firstName,
+    lastName: userModel.lastName,
+    _id: userModel._id
+  }
+}
 
 module.exports = router;

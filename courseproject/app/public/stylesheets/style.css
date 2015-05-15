@@ -9,4 +9,29 @@ a {
 
 .board-col {
   float: left;
+  min-width: 200px;
+}
+
+.proj-board {
+  overflow-x: auto;
+  margin: 15px 0;
+  padding: 15px 0;
+}
+
+.proj-board .board-col td {
+  height: 100px;
+  border-top: none;
+}
+
+.proj-board td a.ticket{
+  border: 1px solid #ddd;
+  padding: 5px;
+  display: block;
+  color: #333;
+}
+
+.proj-board td a.ticket:hover{
+  border: 1px solid #00B7FF;
+  text-decoration: none;
+  color: #333;
 }

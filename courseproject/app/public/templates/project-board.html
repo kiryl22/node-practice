@@ -1,21 +1,36 @@
 <div>
     <h2>{{project.name}} Dashboard</h2>
-    <a class="btn btn-primary" href="#/ticket/{{project._id}}/">Create Ticket</a>
+    <div>
+        <a class="btn btn-primary" href="#/ticket/{{project._id}}/">Create ticket</a>
+        <a class="btn btn-default pull-right" href="#/project/{{project._id}}">Edit project</a>
+    </div>
 </div>
-
 <div class="row">
-    <div class="col-sm-12">
-        <div ng-repeat="status in project.statuses" class="board-col"  ng-style="{ 'width': (100 / project.statuses.length) + '%' }">
-            <table class="table">
-                <thead>
-                <th  >{{status}}</th>
-                </thead>
-                <tbody>
-                <tr ng-repeat="ticket in statusTicketColl[status]">
-                    <td><a href="#/ticket/{{project._id}}/{{ticket._id}}">{{ticket.name}}</a></td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="col-sm-12 proj-board" >
+        <div ng-style="{ 'min-width': project.statuses.length*200 + 'px' }">
+            <div ng-repeat="status in project.statuses" class="board-col"  ng-style="{ 'width': (100 / project.statuses.length) + '%' }">
+                <table class="table">
+                    <thead>
+                    <th  >{{status}}</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="ticket in statusTicketColl[status]">
+                        <td>
+                            <a class="ticket" href="#/ticket/{{project._id}}/{{ticket._id}}">
+                                <div>
+                                    <p>Title: {{ticket.name}}</p>
+                                    <p>Priority: {{ticket.priority}}</p>
+                                    <p>Assignee: {{ticket.assignee.email}}</p>
+                                </div>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr ng-if="maxTicketCount > statusTicketColl[status].length" ng-repeat="i in [] | range:maxTicketCount">
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

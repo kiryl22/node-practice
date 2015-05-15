@@ -52,6 +52,7 @@ clientControllers.controller('ProjectBoardCtrl', ['$scope','$routeParams', 'Proj
 
         $scope.project = project;
         $scope.statusTicketColl = [];
+        $scope.maxTicketCount = 0;
 
         $scope.init = function(){
             ProjectService.getTicketsByProjId($scope.project._id).then(
@@ -79,7 +80,10 @@ clientControllers.controller('ProjectBoardCtrl', ['$scope','$routeParams', 'Proj
                     $scope.statusTicketColl[otherStat].push(ticket)
                     return;
                 }
-                $scope.statusTicketColl[ticket.status].push(ticket)
+                $scope.statusTicketColl[ticket.status].push(ticket);
+                if($scope.statusTicketColl[ticket.status].length > $scope.maxTicketCount){
+                    $scope.maxTicketCount = $scope.statusTicketColl[ticket.status].length;
+                }
             });
         }
 
