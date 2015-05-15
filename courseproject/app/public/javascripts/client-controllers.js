@@ -86,13 +86,16 @@ clientControllers.controller('ProjectBoardCtrl', ['$scope','$routeParams', 'Proj
         $scope.init();
     }]);
 
-clientControllers.controller('TicketCtrl', ['$scope', 'ProjectService', 'project', 'ticket',
-    function ($scope, ProjectService, project, ticket ) {
+clientControllers.controller('TicketCtrl', ['$scope', 'ProjectService', 'project', 'ticket', 'users',
+    function ($scope, ProjectService, project, ticket, users) {
 
         $scope.project = project;
+        $scope.users = users;
+
         $scope.ticket = (ticket && ticket._id) ? ticket : {
             status: (project.statuses && project.statuses[0]) ? project.statuses[0] : "",
-            priority: (project.priorities && project.priorities[0]) ? project.priorities[0] : ""
+            priority: (project.priorities && project.priorities[0]) ? project.priorities[0] : "",
+            assignee: (users && users[0]) ? users[0] : {}
         };
 
         $scope.save = function(){
@@ -106,6 +109,16 @@ clientControllers.controller('TicketCtrl', ['$scope', 'ProjectService', 'project
                 function(err){
                     alertify.error("Ticket saving error");
                 })
+        }
+
+        $scope.buildUserName = function (user){
+            if(!user)
+            return "Unknown";
+
+            if(user.firstName || user.firstName)
+            return user.firstName + " " + user.firstName + " (" + user.email +")"
+
+            return user.email;
         }
 
         $scope.init = function (){

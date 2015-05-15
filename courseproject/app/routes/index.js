@@ -1,6 +1,7 @@
 var express = require('express');
 var Project = require('../models/project');
 var Ticket = require('../models/ticket');
+var User = require('../models/user');
 var router = express.Router();
 
 var isAuthenticated = function (req, res, next) {
@@ -49,9 +50,9 @@ router.get('/GetProject', isAuthenticated, function(req, res, next) {
 });
 
 router.get('/GetTicket', isAuthenticated, function(req, res, next) {
-  Ticket.findOne({'_id' : req.query.ticketId}, function(err, project){
+  Ticket.findOne({'_id' : req.query.ticketId}, function(err, ticket){
     if (err) return next(err);
-    res.json(project);
+    res.json(ticket);
   });
 });
 
@@ -59,7 +60,7 @@ router.post('/SaveTicket', isAuthenticated, function(req, res, next) {
   var ticket = req.body;
   if(ticket._id)
   {
-    Ticket.findByIdAndUpdate(ticket._id, ticket, function (err, data) {
+    Ticket.findByIdAndUpdate(ticket._id, ticket, { 'new': true}, function (err, data) {
       if (err) return handleError(err);
       res.json(data);
     });
@@ -75,6 +76,13 @@ router.get('/GetTickets', isAuthenticated, function(req, res, next) {
   Ticket.find({'projectId': req.query.projectId}, function(err, tickets){
     if (err) return next(err);
     res.json(tickets);
+  });
+});
+
+router.post('/UsersList', isAuthenticated, function(req, res, next) {
+  User.find({}, function(err, users){
+    if (err) return next(err);
+    res.json(users);
   });
 });
 

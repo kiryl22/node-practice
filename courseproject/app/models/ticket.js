@@ -6,5 +6,6 @@ module.exports = mongoose.model('Ticket',{
     status: { type: String, required: false },
     priority: { type: String, required: false },
     description: { type: String, required: false },
-    assigneeId: {type: String, required: false}
+    assignee: {type: {}, required: false},
+    author: {type: {}, required: false}
 });

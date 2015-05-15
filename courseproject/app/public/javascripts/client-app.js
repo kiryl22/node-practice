@@ -45,6 +45,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                         if($route.current.params.ticketId)
                         return ProjectService.getTicket($route.current.params.ticketId);
                         return {};
+                    },
+                    users: function (ProjectService, $route) {
+                        return ProjectService.getUsersList({});
                     }
                 }
             }).
@@ -116,6 +119,15 @@ app.factory('ProjectService', function($http, $q) {
             return $http.post('/SaveTicket', ticket)
                 .catch(function(err) {
                     console.log(err);
+                    return $q.reject(err);
+                });
+        },
+
+        getUsersList: function(conf) {
+            return $http.post('/UsersList', conf)
+                .then(function(result) {
+                    return result.data;
+                }, function(err) {
                     return $q.reject(err);
                 });
         }

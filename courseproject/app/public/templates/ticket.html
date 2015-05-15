@@ -18,7 +18,11 @@
     <label for="ticketPriority">Priority</label>
     <select  class="form-control" ng-options="priority for priority in project.priorities" ng-model="ticket.priority" id="ticketPriority"></select>
 </div>
-    <div class="form-group">
+<div class="form-group">
+    <label for="ticketAssignee">Assignee</label>
+    <select class="form-control" ng-options="user as buildUserName(user) for user in users track by user._id" ng-model="ticket.assignee" id="ticketAssignee"></select>
+</div>
+<div class="form-group">
     <label for="ticketDescription">Description</label>
     <textarea class="form-control" ng-model="ticket.description" rows="5" id="ticketDescription"></textarea>
 </div>
