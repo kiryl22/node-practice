@@ -11,7 +11,7 @@
             <div ng-repeat="status in project.statuses" class="board-col"  ng-style="{ 'width': (100 / project.statuses.length) + '%' }">
                 <table class="table">
                     <thead>
-                    <th  >{{status}}</th>
+                        <th>{{status}}</th>
                     </thead>
                     <tbody>
                     <tr ng-repeat="ticket in statusTicketColl[status]">

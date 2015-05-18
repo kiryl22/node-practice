@@ -8,10 +8,17 @@ module.exports = function(passport) {
 
   /* Handle Login POST */
   router.post('/login', passport.authenticate('login', {
-    successRedirect: '/',
+   /* successRedirect: '/',*/
     failureRedirect: '/auth/login',
     failureFlash: true
-  }));
+  }), function(req, res) {
+    if (req.body.rememberme) {
+      req.session.cookie.expires = false;
+    } else {
+      req.session.cookie.maxAge = 1000 * 60 * 3; //3 minutes
+    }
+    res.redirect('/')
+  });
 
   router.get('/signup', function (req, res, next) {
     res.render('signup', {title: 'Sign Up', message: req.flash('message')});
