@@ -8,7 +8,7 @@
 {% endblock %}
 
    {% block nav %}
-       <li><a href="#about">About</a></li>
+       <li ng-class="{ active: isActive('/about')}"><a href="#/about">About</a></li>
    {% endblock %}
 
     {% block nav-right %}

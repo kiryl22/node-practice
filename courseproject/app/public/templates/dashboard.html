@@ -1,24 +1,23 @@
 <div>
-    <h3>Dashboard</h3>
-    <table class="table">
-        <thead>
-            <th>#</th>
-            <th>Project Name</th>
-            <th></th>
-        <thead>
-        <tbody>
-            <tr ng-repeat="project in projectsList">
-                <td>{{ $index + 1 }}.</td>
-                <td><a ng-href="#/project/{{project._id}}/board">{{ project.name }}</a></td>
-                <td><a ng-href="#/project/{{project._id}}"><span class="glyphicon glyphicon-pencil"></span> Edit</a></td>
-            </tr>
-            <tr>
-                <td>
-                    <a class="btn btn-primary" href="#/project">Create New</a>
-                </td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+    <h3>Projects</h3>
+    <div class="col-xs-12 col-sm-10 col-md-8 row">
+        <table class="table table-condensed">
+            <tbody>
+                <tr ng-repeat="project in projectsList" ng-if="$even">
+                    <td>
+                        <a ng-href="#/project/{{project._id}}/board">{{ project.name }}</a>
+                        <p ng-if="project.created" class="text-muted">{{project.created | date : 'yyyy-MM-dd HH:mm:ss'}}</p>
+                    </td>
+                    <td>
+                        <a ng-if="projectsList[$index+1]" ng-href="#/project/{{projectsList[$index+1]._id}}/board">{{ projectsList[$index+1].name }}</a>
+                        <p ng-if="projectsList[$index+1].created" class="text-muted">{{projectsList[$index+1].created | date : 'yyyy-MM-dd HH:mm:ss'}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a class="btn btn-primary" href="#/project">Create New</a></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -14,6 +14,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                     }
                 }
             }).
+            when('/about', {
+                templateUrl: '/templates/about.html'
+            }).
             when('/project/:projectId?', {
                 templateUrl: '/templates/project.html',
                 controller: 'ProjectCtrl',
@@ -56,6 +59,12 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             });
     }]);
 
+app.controller('NavbarController', function ($scope, $location)
+{
+    $scope.isActive = function (viewLocation) {
+        return viewLocation === $location.path();
+    };
+})
 
 app.factory('ProjectService', function($http, $q) {
     return {

@@ -15,7 +15,6 @@ a {
 .proj-board {
   overflow-x: auto;
   margin: 15px 0;
-  padding: 15px 0;
 }
 
 .proj-board .board-col td {
