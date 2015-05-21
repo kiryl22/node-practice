@@ -6,26 +6,26 @@
     </ol>
 </div>
 <div>
-<div class="col-sm-6 col-xs-12 form-group">
-    <label for="ticketName">Title</label>
-    <input type="text" class="form-control" ng-model="ticket.name" name='ticketName' id="ticketName" placeholder="Enter ticket title">
-</div>
-<div class="col-sm-6 col-xs-12 form-group">
-    <label for="ticketStatus">Status</label>
-    <select  class="form-control" ng-options="status for status in project.statuses" ng-model="ticket.status" id="ticketStatus"></select>
-</div>
-<div class="col-sm-6 col-xs-12 form-group">
-    <label for="ticketPriority">Priority</label>
-    <select  class="form-control" ng-options="priority for priority in project.priorities" ng-model="ticket.priority" id="ticketPriority"></select>
-</div>
-<div class="col-sm-6 col-xs-12 form-group">
-    <label for="ticketAssignee">Assignee</label>
-    <select class="form-control" ng-options="user as buildUserName(user) for user in users track by user._id" ng-model="ticket.assignee" id="ticketAssignee"></select>
-</div>
-<div class="col-sm-6 col-xs-12 form-group">
-    <label for="ticketDescription">Description</label>
-    <textarea class="form-control" ng-model="ticket.description" rows="5" id="ticketDescription"></textarea>
-</div>
+    <div class="col-sm-6 col-xs-12 form-group">
+        <label for="ticketName">Title</label>
+        <input type="text" class="form-control" ng-model="ticket.name" name='ticketName' id="ticketName" placeholder="Enter ticket title">
+    </div>
+    <div class="col-sm-6 col-xs-12 form-group">
+        <label for="ticketStatus">Status</label>
+        <select  class="form-control" ng-options="status for status in project.statuses" ng-model="ticket.status" id="ticketStatus"></select>
+    </div>
+    <div class="col-sm-6 col-xs-12 form-group">
+        <label for="ticketPriority">Priority</label>
+        <select  class="form-control" ng-options="priority for priority in project.priorities" ng-model="ticket.priority" id="ticketPriority"></select>
+    </div>
+    <div class="col-sm-6 col-xs-12 form-group">
+        <label for="ticketAssignee">Assignee</label>
+        <select class="form-control" ng-options="user as buildUserName(user) for user in users track by user._id" ng-model="ticket.assignee" id="ticketAssignee"></select>
+    </div>
+    <div class="col-sm-6 col-xs-12 form-group">
+        <label for="ticketDescription">Description</label>
+        <textarea class="form-control" ng-model="ticket.description" rows="5" id="ticketDescription"></textarea>
+    </div>
     <div class="col-xs-12">
         <button class="btn btn-primary" ng-click="save()">Save Ticket</button>
     </div>

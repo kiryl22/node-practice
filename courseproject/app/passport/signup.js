@@ -10,7 +10,6 @@ module.exports = function(passport){
                 passwordField: 'password'
             },
             function(req, email, password, done) {
-
                     // find a user in Mongo with provided username
                     User.findOne({ 'email' :  email }, function(err, user) {
                         // In case of any error, return using the done method

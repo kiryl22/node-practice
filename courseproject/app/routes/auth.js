@@ -8,7 +8,6 @@ module.exports = function(passport) {
 
   /* Handle Login POST */
   router.post('/login', passport.authenticate('login', {
-   /* successRedirect: '/',*/
     failureRedirect: '/auth/login',
     failureFlash: true
   }), function(req, res) {

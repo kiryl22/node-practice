@@ -5,9 +5,6 @@ var User = require('../models/user');
 var router = express.Router();
 
 var isAuthenticated = function (req, res, next) {
-  // if user is authenticated in the session, call the next() to call the next request handler
-  // Passport adds this method to request object. A middleware is allowed to add properties to
-  // request and response objects
   if (req.isAuthenticated())
     return next();
   // if the user is not authenticated then redirect him to the login page
@@ -19,11 +16,12 @@ router.get('/', isAuthenticated, function(req, res, next) {
     res.render('index');
 });
 
+/* db calls */
 router.post('/SaveProject', isAuthenticated, function(req, res, next) {
   var project = req.body;
   if(project._id)
   {
-    Project.findByIdAndUpdate(project._id, project,{ 'new': true}, function (err, data) {
+    Project.findByIdAndUpdate(project._id, project, {'new': true}, function (err, data) {
       if (err) return handleError(err);
       res.json(data);
     });
@@ -60,11 +58,11 @@ router.post('/SaveTicket', isAuthenticated, function(req, res, next) {
   var ticket = req.body;
   if(ticket._id)
   {
-    Ticket.findByIdAndUpdate(ticket._id, ticket, { 'new': true}, function (err, data) {
+    Ticket.findByIdAndUpdate(ticket._id, ticket, {'new': true}, function (err, data) {
       if (err) return handleError(err);
       res.json(data);
     });
-  }else {
+  } else {
     ticket.author = mapUser(req.user);
     Ticket.create(ticket, function (err, data) {
       if (err) return next(err);
