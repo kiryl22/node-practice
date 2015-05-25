@@ -19,6 +19,16 @@ clientControllers.controller('ProjectCtrl', ['$scope', '$routeParams', 'ProjectS
                     $scope.project = res.data;
                     alertify.success("Project was saved");
                 }
+                else {
+                    if(res.data && res.data.error) {
+                        if(res.data.message){
+                            alertify.error(res.data.message);
+                        }
+                        else {
+                            alertify.error("Project saving error");
+                        }
+                    }
+                }
             }, function(res){
                 alertify.error("Project saving error");
             })

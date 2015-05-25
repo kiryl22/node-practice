@@ -17,8 +17,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('twig', swig.renderFile);
 app.set('view engine', 'twig');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,7 +29,9 @@ var expressSession = require('express-session');
 var MongoStore = require('connect-mongo')(expressSession);
 app.use(expressSession({
   secret: 'mySecretKey',
-  store: new MongoStore({ mongooseConnection: mongoose.connection })
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  resave: true,
+  saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -46,9 +46,11 @@ var initPassport = require('./passport/init');
 initPassport(passport);
 
 var routes = require('./routes/index');
+var api = require('./routes/api');
 var auth = require('./routes/auth')(passport);
 
 app.use('/', routes);
+app.use('/', api);
 app.use('/auth', auth);
 
 // catch 404 and forward to error handler
