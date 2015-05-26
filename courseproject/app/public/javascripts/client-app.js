@@ -10,7 +10,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                 controller: 'DashboardCtrl',
                 resolve: {
                     projectList: function (ProjectService) {
-                        return ProjectService.getProjectsList();
+                        return ProjectService.getAll();
                     }
                 }
             }).
@@ -23,7 +23,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                 resolve: {
                     project: function (ProjectService, $route) {
                         if($route.current.params.projectId)
-                        return ProjectService.getProject($route.current.params.projectId);
+                        return ProjectService.get($route.current.params.projectId);
                         return { statuses: [], priorities: []}
                     }
                 }
@@ -33,7 +33,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                 controller: 'ProjectBoardCtrl',
                 resolve: {
                     project: function (ProjectService, $route) {
-                        return ProjectService.getProject($route.current.params.projectId);
+                        return ProjectService.get($route.current.params.projectId);
                     }
                 }
             }).
@@ -42,15 +42,15 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
                 controller: 'TicketCtrl',
                 resolve: {
                     project: function (ProjectService, $route) {
-                        return ProjectService.getProject($route.current.params.projectId);
+                        return ProjectService.get($route.current.params.projectId);
                     },
-                    ticket: function (ProjectService, $route) {
+                    ticket: function (TicketService, $route) {
                         if($route.current.params.ticketId)
-                        return ProjectService.getTicket($route.current.params.ticketId);
+                        return TicketService.get($route.current.params.ticketId);
                         return {};
                     },
-                    users: function (ProjectService, $route) {
-                        return ProjectService.getUsersList({});
+                    users: function (UserService, $route) {
+                        return UserService.get({});
                     }
                 }
             }).
@@ -67,10 +67,10 @@ app.controller('NavbarController', function ($scope, $location)
 })
 
 app.factory('ProjectService', function($http, $q) {
+    var serviceUrl = "/api/projects";
     return {
-
-        getProjectsList: function() {
-            return $http.get('/ProjectsList').then(function(result) {
+        getAll: function() {
+            return $http.get(serviceUrl + '/').then(function(result) {
                 alertify.success("Project list loaded");
                 return result.data;
             }, function(result) {
@@ -79,8 +79,8 @@ app.factory('ProjectService', function($http, $q) {
             });;
         },
 
-        getProject: function(projectId) {
-            return $http.get('/GetProject', {
+        get: function(projectId) {
+            return $http.get(serviceUrl +'/get', {
                 params: {
                     projectId: projectId
                 }
@@ -92,16 +92,21 @@ app.factory('ProjectService', function($http, $q) {
             });
         },
 
-        saveProject: function(project) {
-            return $http.post('/SaveProject', project)
+        save: function(project) {
+            return $http.post(serviceUrl +'/save', project)
                 .catch(function(err) {
                     console.log(err);
                     return $q.reject(err);
                 });
-        },
+        }
+    }
+});
 
-        getTicket: function(ticketId) {
-            return $http.get('/GetTicket', {
+app.factory('TicketService', function($http, $q) {
+    var serviceUrl = "/api/tickets";
+    return {
+        get: function(ticketId) {
+            return $http.get(serviceUrl + '/get', {
                 params: {
                     ticketId: ticketId
                 }
@@ -112,8 +117,8 @@ app.factory('ProjectService', function($http, $q) {
             });
         },
 
-        getTicketsByProjId: function(projectId) {
-            return $http.get('/GetTickets', {
+        getByProjId: function(projectId) {
+            return $http.get(serviceUrl + '/', {
                 params: {
                     projectId: projectId
                 }
@@ -124,16 +129,21 @@ app.factory('ProjectService', function($http, $q) {
             });
         },
 
-        saveTicket: function(ticket) {
-            return $http.post('/SaveTicket', ticket)
+        save: function(ticket) {
+            return $http.post(serviceUrl + '/save', ticket)
                 .catch(function(err) {
                     console.log(err);
                     return $q.reject(err);
                 });
-        },
+        }
+    }
+});
 
-        getUsersList: function(conf) {
-            return $http.post('/UsersList', conf)
+app.factory('UserService', function($http, $q) {
+    var serviceUrl = "/api/users";
+    return {
+        get: function(conf) {
+            return $http.post(serviceUrl + '/', conf)
                 .then(function(result) {
                     return result.data;
                 }, function(err) {

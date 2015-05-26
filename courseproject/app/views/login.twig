@@ -7,8 +7,9 @@
 {% endblock %}
 
 {% block content %}
-<div>
+<div class="col-sm-6 col-xs-12 row">
     <h3>Please Log in</h3>
+    <br>
     <form action='/auth/login', method='POST'>
         {% if message != undefined %}
          <div class="alert alert-danger" role="alert">{{ message }}</div>

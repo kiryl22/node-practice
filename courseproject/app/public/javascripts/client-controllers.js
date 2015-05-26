@@ -10,11 +10,16 @@ clientControllers.controller('ProjectCtrl', ['$scope', '$routeParams', 'ProjectS
 
         $scope.project= project;
 
+        if(!$scope.project._id){
+            $scope.project.priorities = ["Low", "Regular", "High"];
+            $scope.project.statuses = ["ToDo", "In Progress", "Done"];
+        }
+
         $scope.statusToAdd = "";
         $scope.priorityToAdd = "";
 
         $scope.save = function(){
-            ProjectService.saveProject($scope.project).then(function(res){
+            ProjectService.save($scope.project).then(function(res){
                 if(res.data && res.data._id){
                     $scope.project = res.data;
                     alertify.success("Project was saved");
@@ -57,15 +62,15 @@ clientControllers.controller('ProjectCtrl', ['$scope', '$routeParams', 'ProjectS
         }
     }]);
 
-clientControllers.controller('ProjectBoardCtrl', ['$scope','$routeParams', 'ProjectService', 'project',
-    function ($scope, $routeParams, ProjectService, project) {
+clientControllers.controller('ProjectBoardCtrl', ['$scope','$routeParams', 'TicketService', 'project',
+    function ($scope, $routeParams, TicketService, project) {
 
         $scope.project = project;
         $scope.statusTicketColl = [];
         $scope.maxTicketCount = 0;
 
         $scope.init = function(){
-            ProjectService.getTicketsByProjId($scope.project._id).then(
+            TicketService.getByProjId($scope.project._id).then(
                 function(data) {
                     if(data) {
                         sortTicketsByStatus(data, $scope.project.statuses);
@@ -100,8 +105,8 @@ clientControllers.controller('ProjectBoardCtrl', ['$scope','$routeParams', 'Proj
         $scope.init();
     }]);
 
-clientControllers.controller('TicketCtrl', ['$scope', 'ProjectService', 'project', 'ticket', 'users',
-    function ($scope, ProjectService, project, ticket, users) {
+clientControllers.controller('TicketCtrl', ['$scope', 'TicketService', 'project', 'ticket', 'users',
+    function ($scope, TicketService, project, ticket, users) {
 
         $scope.project = project;
         $scope.users = users;
@@ -113,7 +118,7 @@ clientControllers.controller('TicketCtrl', ['$scope', 'ProjectService', 'project
         };
 
         $scope.save = function(){
-            ProjectService.saveTicket($scope.ticket)
+            TicketService.save($scope.ticket)
                 .then( function(res){
                     if(res.data && res.data._id){
                         $scope.ticket = res.data;
