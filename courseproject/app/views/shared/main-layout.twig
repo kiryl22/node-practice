@@ -3,8 +3,14 @@
 {% block head %}
     {% parent %}
     <base href="/">
+    <script src="javascripts/services/project-service.js"></script>
+    <script src="javascripts/services/ticket-service.js"></script>
+    <script src="javascripts/services/user-service.js"></script>
+    <script src="javascripts/controllers/dashboard-controller.js"></script>
+    <script src="javascripts/controllers/project-controller.js"></script>
+    <script src="javascripts/controllers/project-board-controller.js"></script>
+    <script src="javascripts/controllers/ticket-controller.js"></script>
     <script src="javascripts/client-app.js"></script>
-    <script src="javascripts/client-controllers.js"></script>
 {% endblock %}
 
    {% block nav %}

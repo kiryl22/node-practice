@@ -1,6 +1,12 @@
 var app = angular.module('app', [
     'ngRoute',
-    'clientControllers'
+    'projectService',
+    'ticketService',
+    'userService',
+    'projectController',
+    'projectBoardController',
+    'ticketController',
+    'dashboardController'
 ]);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
@@ -65,93 +71,6 @@ app.controller('NavbarController', function ($scope, $location)
         return viewLocation === $location.path();
     };
 })
-
-app.factory('ProjectService', function($http, $q) {
-    var serviceUrl = "/api/projects";
-    return {
-        getAll: function() {
-            return $http.get(serviceUrl + '/').then(function(result) {
-                alertify.success("Project list loaded");
-                return result.data;
-            }, function(result) {
-                alertify.error("Error has occurred while retrieving projects list");
-                return result;
-            });;
-        },
-
-        get: function(projectId) {
-            return $http.get(serviceUrl +'/get', {
-                params: {
-                    projectId: projectId
-                }
-            }).then(function(result) {
-                return result.data;
-            }, function(result) {
-                alertify.error("Error has occurred while retrieving project data");
-                return result;
-            });
-        },
-
-        save: function(project) {
-            return $http.post(serviceUrl +'/save', project)
-                .catch(function(err) {
-                    console.log(err);
-                    return $q.reject(err);
-                });
-        }
-    }
-});
-
-app.factory('TicketService', function($http, $q) {
-    var serviceUrl = "/api/tickets";
-    return {
-        get: function(ticketId) {
-            return $http.get(serviceUrl + '/get', {
-                params: {
-                    ticketId: ticketId
-                }
-            }).then(function(result) {
-                return result.data;
-            }, function(err) {
-                return $q.reject(err);
-            });
-        },
-
-        getByProjId: function(projectId) {
-            return $http.get(serviceUrl + '/', {
-                params: {
-                    projectId: projectId
-                }
-            }).then(function(result) {
-                return result.data;
-            }, function(err) {
-                return $q.reject(err);
-            });
-        },
-
-        save: function(ticket) {
-            return $http.post(serviceUrl + '/save', ticket)
-                .catch(function(err) {
-                    console.log(err);
-                    return $q.reject(err);
-                });
-        }
-    }
-});
-
-app.factory('UserService', function($http, $q) {
-    var serviceUrl = "/api/users";
-    return {
-        get: function(conf) {
-            return $http.post(serviceUrl + '/', conf)
-                .then(function(result) {
-                    return result.data;
-                }, function(err) {
-                    return $q.reject(err);
-                });
-        }
-    }
-});
 
 app.directive('editableRow', function($timeout) {
     return {
